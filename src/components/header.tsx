@@ -7,6 +7,7 @@ import { Wordmark } from "./wordmark";
 import Cta from "./cta";
 
 const LINKS = [
+  { href: "#work", label: "Our work" },
   { href: "#experiences", label: "What we do" },
   { href: "#how-it-works", label: "How it works" },
   { href: "#included", label: "Included" },

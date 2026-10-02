@@ -13,6 +13,65 @@ export const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 export const LOGO_SRC = `${BASE_PATH}/stella-white-logo.jpg`;
 
 /**
+ * The studio's own photographs (from Guy, 2 Oct 2026; originals in projects/jane-website/photos-from-guy-20261002/).
+ * Web copies live in public/work/: 1280 px (the originals' full width, never upscaled) and 800 px, quality 80, no metadata.
+ * The screenshot (trio) had its phone bars cropped off and is only 719 px wide, so it is always shown small.
+ */
+export type WorkPhoto = {
+  src: string;
+  srcSet?: string;
+  width: number;
+  height: number;
+  alt: string;
+};
+
+const WORK_DIR = `${BASE_PATH}/work`;
+const sized = (name: string, width: number, height: number, alt: string): WorkPhoto => ({
+  src: `${WORK_DIR}/${name}-1280.jpg`,
+  srcSet: `${WORK_DIR}/${name}-800.jpg 800w, ${WORK_DIR}/${name}-1280.jpg 1280w`,
+  width,
+  height,
+  alt,
+});
+
+export const WORK: Record<"champagne" | "couple" | "print" | "trio", WorkPhoto> = {
+  champagne: sized(
+    "three-guests-champagne",
+    1280,
+    853,
+    "Three smiling guests with glasses of champagne in front of a black backdrop, one wearing a Happy Birthday headband",
+  ),
+  couple: sized("couple", 1280, 853, "A smiling couple, arms around each other, in front of a black backdrop"),
+  print: sized(
+    "print-cates-40th",
+    1280,
+    914,
+    "A finished print with a white border: six guests, several in heart-shaped sunglasses, with “Cate’s 40th, 31 Jan 2026” printed at the bottom right",
+  ),
+  trio: {
+    src: `${WORK_DIR}/trio-flower-wall.jpg`,
+    width: 719,
+    height: 576,
+    alt: "Black-and-white portrait of three guests in front of a flower wall, in a hat and heart-shaped sunglasses, a horned helmet and a captain’s cap",
+  },
+};
+
+/** Lightbox order. Triggers on the page use these indexes (data-lightbox="n"). */
+export const GALLERY: WorkPhoto[] = [WORK.couple, WORK.trio, WORK.print, WORK.champagne];
+export const GALLERY_INDEX = { couple: 0, trio: 1, print: 2, champagne: 3 } as const;
+
+/**
+ * First tiles of the Instagram-style grid. Square crops where no face is cut; the print and the trio cannot be cut
+ * square without cutting a face, so they sit whole inside the tile (the print on white, like its own border).
+ */
+export const FEED_WORK: { photo: WorkPhoto; position: string; contain?: boolean; bg: string }[] = [
+  { photo: WORK.champagne, position: "50% 50%", bg: "bg-coal" },
+  { photo: WORK.couple, position: "68% 50%", bg: "bg-coal" },
+  { photo: WORK.print, position: "50% 50%", contain: true, bg: "bg-white" },
+  { photo: WORK.trio, position: "50% 50%", contain: true, bg: "bg-ink" },
+];
+
+/**
  * Real Instagram posts to embed, e.g. "https://www.instagram.com/p/AbCdEfGhIjK/".
  * Leave empty and the page shows the illustrative tile grid instead. When it has
  * items, the official Instagram embeds render and embed.js loads (only then).
@@ -64,12 +123,8 @@ export const PHOTOS = {
   },
 } satisfies Record<string, Photo>;
 
-/** Illustrative tiles shown until real posts are embedded. Same stock imagery as the rest of the preview. */
+/** Illustrative stock tiles after the studio's own (FEED_WORK), shown until real posts are embedded. */
 export const FEED_TILES: Photo[] = [
-  { id: "photo-1612928414075-bc722ade44f1", alt: "Black-and-white portrait of a woman with curly hair against a light backdrop", focal: { x: 0.5, y: 0.35 } },
-  { id: "photo-1614750880774-6e5cb149607b", alt: "A bride in a long gown beside an arched window, in black and white", focal: { x: 0.5, y: 0.55 } },
-  { id: "photo-1557676715-93b39337b8ee", alt: "A hand-lettered card beside an inkwell and calligraphy pen", focal: { x: 0.4, y: 0.5 } },
-  { id: "photo-1688559688736-140e6cbd2c17", alt: "Two hands raising champagne glasses in a toast, in black and white", focal: { x: 0.45, y: 0.4 } },
   { id: "photo-1634729108740-ea8aa195634a", alt: "A couple in flower crowns laughing together, in black and white", focal: { x: 0.5, y: 0.4 } },
   { id: "photo-1574514120529-364d014b9a0a", alt: "Framed black-and-white prints on a white wall", focal: { x: 0.5, y: 0.45 } },
   { id: "photo-1620122303020-87ec826cf70d", alt: "Black-and-white studio portrait of a woman with slicked-back hair", focal: { x: 0.5, y: 0.42 } },
@@ -78,7 +133,7 @@ export const FEED_TILES: Photo[] = [
 ];
 
 export const STATEMENT =
-  "We bring a real portrait studio to your party. Studio light, a backdrop made for the night, and a black-and-white print in every guest’s hand within a minute.";
+  "We bring a real portrait studio to your party. Studio light, a backdrop made for the night, and a print in every guest’s hand within a minute.";
 
 export const EXPERIENCES = {
   studio: {
@@ -184,8 +239,8 @@ export const FAQS = [
     a: "That’s what The Atelier is for. Send colours, names, a monogram or artwork and we’ll design around it.",
   },
   {
-    q: "Is everything black and white?",
-    a: "It’s our signature, and it flatters everyone. If you want something else, ask.",
+    q: "Colour or black and white?",
+    a: "Either. Tell us which suits the night.",
   },
   {
     q: "Do guests get their photos on the night?",

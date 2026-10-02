@@ -21,7 +21,7 @@ const playfair = Playfair_Display({
 
 const title = "Stella White Studio | Event portraits, finished by hand";
 const description =
-  "Studio-lit black-and-white portraits at weddings, parties and launches. Backdrops and prints made by hand for your event. Travel on request.";
+  "Studio-lit portraits at weddings, parties and launches. Backdrops and prints made by hand for your event. Travel on request.";
 const logo = `${SITE_URL}stella-white-logo.jpg`;
 
 export const metadata: Metadata = {

@@ -6,13 +6,17 @@ import Carousel from "@/components/carousel";
 import Motion from "@/components/motion";
 import Words from "@/components/words";
 import InstagramEmbeds from "@/components/instagram-embeds";
+import Lightbox from "@/components/lightbox";
 import { Lockup } from "@/components/wordmark";
-import { FeatureIcon, InstagramIcon, PlusIcon } from "@/components/icons";
+import { ChevronRight, FeatureIcon, InstagramIcon, PlusIcon } from "@/components/icons";
 import {
   BIO_LINE,
   EXPERIENCES,
   FAQS,
   FEED_TILES,
+  FEED_WORK,
+  GALLERY,
+  GALLERY_INDEX,
   INCLUDED,
   INSTAGRAM_HANDLE,
   INSTAGRAM_POST_URLS,
@@ -24,7 +28,8 @@ import {
   SITE_NAME,
   STATEMENT,
   STEPS,
-  photoUrl,
+  WORK,
+  type WorkPhoto,
 } from "@/lib/site";
 
 const idx = (i: number) => ({ "--i": i }) as CSSProperties;
@@ -58,14 +63,14 @@ function SectionHead({
 }
 
 function Hero() {
-  const hero = PHOTOS.hero;
+  const hero = WORK.champagne;
   return (
     <section id="top" className="bg-paper text-ink">
       <Container className="pb-12 pt-28 text-center lg:pb-16 lg:pt-32">
         <Lockup className="[--wm:clamp(2.5rem,5vw,3.5rem)]" />
         <h1 className="t-display mx-auto mt-10 max-w-[16ch] lg:mt-12">Portraits, printed in a minute.</h1>
         <p className="t-sub mx-auto mt-6 max-w-2xl text-steel">
-          Studio-lit black and white at your wedding, party or launch. Backdrops and prints made by hand, for your event.
+          Studio-lit portraits at your wedding, party or launch. Backdrops and prints made by hand, for your event.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-8">
           <Cta tone="onLight" />
@@ -73,28 +78,54 @@ function Hero() {
         </div>
       </Container>
 
+      {/* The studio's own picture. Capped at its native 1280 px so it is never stretched. */}
       <div className="px-3 pb-3 sm:px-4 sm:pb-4">
-        <div className="relative mx-auto aspect-[4/5] w-full max-w-[1600px] overflow-hidden rounded-[28px] bg-coal sm:aspect-[16/10] sm:rounded-[40px] lg:aspect-[16/9]">
-          <picture>
-            <source media="(max-width: 639px)" srcSet={photoUrl(hero.id, 900, 1125, { x: 0.5, y: 0.4 })} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={photoUrl(hero.id, 2400, 1350, hero.focal)}
-              alt={hero.alt}
-              width={2400}
-              height={1350}
-              fetchPriority="high"
-              decoding="async"
-              className="settle h-full w-full object-cover"
-            />
-          </picture>
+        <div className="relative mx-auto aspect-[4/3] w-full max-w-[1280px] overflow-hidden rounded-[28px] bg-ink sm:aspect-[16/10] sm:rounded-[40px] lg:aspect-[16/9]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={hero.src}
+            srcSet={hero.srcSet}
+            sizes="(min-width: 1280px) 1280px, 100vw"
+            alt={hero.alt}
+            width={hero.width}
+            height={hero.height}
+            fetchPriority="high"
+            decoding="async"
+            className="settle h-full w-full object-cover object-[50%_35%]"
+          />
         </div>
       </div>
     </section>
   );
 }
 
+/** A link to a full-size picture that opens the photo viewer instead (components/lightbox.tsx). */
+function ViewLink({
+  photo,
+  index,
+  className = "",
+  children,
+}: {
+  photo: WorkPhoto;
+  index: number;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <a href={photo.src} data-lightbox={index} aria-haspopup="dialog" className={`cursor-zoom-in ${className}`}>
+      {children}
+      <span className="sr-only">, view larger</span>
+    </a>
+  );
+}
+
 function Statement() {
+  // Two of the studio's own portraits, side by side at equal height and never cropped: each item grows in
+  // proportion to its aspect ratio. Stacked on phones.
+  const band = [
+    { photo: WORK.couple, index: GALLERY_INDEX.couple, sizes: "(min-width: 640px) 55vw, 100vw" },
+    { photo: WORK.trio, index: GALLERY_INDEX.trio, sizes: "(min-width: 640px) 45vw, 100vw" },
+  ];
   return (
     <section className="on-dark bg-ink py-24 text-paper lg:py-40" aria-label="About the studio">
       <Container>
@@ -104,6 +135,89 @@ function Statement() {
         >
           <Words text={STATEMENT} />
         </p>
+      </Container>
+
+      <div id="work" className="mt-20 scroll-mt-20 lg:mt-32">
+        <Container className="flex items-end justify-between gap-6">
+          <p data-reveal className="t-eyebrow text-ash">
+            From the studio
+          </p>
+          <a
+            href={WORK.couple.src}
+            data-lightbox={0}
+            aria-haspopup="dialog"
+            className="group/link inline-flex items-center gap-1 text-[15px] font-medium tracking-[-0.01em] text-paper underline decoration-transparent underline-offset-4 transition-colors hover:decoration-current"
+          >
+            View all {GALLERY.length} photos
+            <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-0.5" />
+          </a>
+        </Container>
+        <ul className="mx-auto mt-6 flex w-full max-w-[1312px] flex-col gap-3 px-3 sm:flex-row sm:gap-4 sm:px-4">
+          {band.map((b, i) => (
+            <li
+              key={b.photo.src}
+              data-reveal
+              style={{ ...idx(i), flex: `${(b.photo.width / b.photo.height).toFixed(4)} 1 0%` }}
+              className="min-w-0"
+            >
+              <ViewLink photo={b.photo} index={b.index} className="group block overflow-hidden rounded-[28px] bg-black">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={b.photo.src}
+                  srcSet={b.photo.srcSet}
+                  sizes={b.sizes}
+                  alt={b.photo.alt}
+                  width={b.photo.width}
+                  height={b.photo.height}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-auto w-full transition-transform duration-[1600ms] ease-out group-hover:scale-[1.03]"
+                />
+              </ViewLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function ThePrint() {
+  const print = WORK.print;
+  return (
+    <section id="the-print" aria-labelledby="print-title" className="overflow-x-clip bg-paper py-24 lg:py-40">
+      <Container className="grid items-center gap-16 lg:grid-cols-12 lg:gap-12">
+        <div data-reveal className="lg:col-span-5">
+          <p className="t-eyebrow text-steel">The print</p>
+          <h2 id="print-title" className="t-h2 mt-4">
+            The part guests take home.
+          </h2>
+          <p className="t-sub mt-6 max-w-md text-steel">
+            A printed portrait, finished with the name of the occasion and the date.
+          </p>
+          <TextLink tone="onLight" className="mt-8">
+            Plan yours on Instagram
+          </TextLink>
+        </div>
+        <figure data-reveal data-print style={idx(1)} className="mx-auto w-full max-w-[680px] lg:col-span-7">
+          <ViewLink photo={print} index={GALLERY_INDEX.print} className="print-card overflow-hidden bg-white">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={print.src}
+              srcSet={print.srcSet}
+              sizes="(min-width: 1024px) 680px, 92vw"
+              alt={print.alt}
+              width={print.width}
+              height={print.height}
+              loading="lazy"
+              decoding="async"
+              className="block h-auto w-full"
+            />
+          </ViewLink>
+          <figcaption className="mt-10 text-center text-[14px] text-steel">
+            A real print, from Cate’s 40th, 31 Jan 2026.
+          </figcaption>
+        </figure>
       </Container>
     </section>
   );
@@ -339,6 +453,34 @@ function InstagramSection() {
             ) : (
               <>
                 <ul className="grid grid-cols-3 gap-1">
+                  {FEED_WORK.map((t) => (
+                    <li key={t.photo.src}>
+                      <a
+                        href={INSTAGRAM_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Open Instagram: ${t.photo.alt}`}
+                        className={`group relative block aspect-square overflow-hidden ${t.bg}`}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={t.photo.srcSet ? t.photo.src.replace("-1280.jpg", "-800.jpg") : t.photo.src}
+                          alt={t.photo.alt}
+                          width={t.photo.width}
+                          height={t.photo.height}
+                          loading="lazy"
+                          decoding="async"
+                          style={{ objectPosition: t.position }}
+                          className={`h-full w-full transition-transform duration-[1200ms] ease-out group-hover:scale-105 ${
+                            t.contain ? "object-contain" : "object-cover"
+                          }`}
+                        />
+                        <span className="absolute inset-0 flex items-center justify-center bg-ink/45 text-paper opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                          <InstagramIcon className="h-8 w-8" />
+                        </span>
+                      </a>
+                    </li>
+                  ))}
                   {FEED_TILES.map((t) => (
                     <li key={t.id}>
                       <a
@@ -365,7 +507,8 @@ function InstagramSection() {
                   ))}
                 </ul>
                 <p className="mt-6 text-center text-[13px] text-steel">
-                  Illustrative preview. Select any tile to open the real feed on Instagram.
+                  The first four tiles are the studio’s own photos; the rest are illustrative stock. Select any tile to
+                  open Instagram.
                 </p>
               </>
             )}
@@ -447,6 +590,7 @@ function FinalCta() {
 
 function Footer() {
   const links = [
+    { href: "#work", label: "Our work" },
     { href: "#experiences", label: "What we do" },
     { href: "#how-it-works", label: "How it works" },
     { href: "#included", label: "Included" },
@@ -494,8 +638,9 @@ function Footer() {
         <div className="flex flex-col gap-2 pt-6 md:flex-row md:justify-between md:gap-10">
           <p>© 2026 Stella White Studio. All rights reserved.</p>
           <p className="md:max-w-xl md:text-right">
-            First-look preview. Photography shown is illustrative stock (Unsplash) and will be replaced with the studio’s own
-            work.
+            First-look preview. The photos of guests at the top of the page, under From the studio, in The print and in
+            the first four Instagram tiles are the studio’s own work. All other photography is illustrative stock
+            (Unsplash), to be replaced with the studio’s own.
           </p>
         </div>
       </Container>
@@ -516,6 +661,7 @@ export default function Home() {
       <main id="main">
         <Hero />
         <Statement />
+        <ThePrint />
         <Experiences />
         <HowItWorks />
         <Included />
@@ -526,6 +672,7 @@ export default function Home() {
         <FinalCta />
       </main>
       <Footer />
+      <Lightbox />
       <Motion />
     </>
   );
