@@ -34,7 +34,7 @@ export default function Carousel({ children, label }: { children: ReactNode; lab
   };
 
   const btn =
-    "inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 disabled:opacity-30 disabled:hover:bg-white/10";
+    "inline-flex h-12 w-12 items-center justify-center rounded-full bg-paper/10 text-paper transition-colors hover:bg-paper/20 disabled:opacity-30 disabled:hover:bg-paper/10";
 
   return (
     <div>

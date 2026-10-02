@@ -2,17 +2,18 @@
 
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-wm: var(--font-playfair), "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
+/* Palette lifted from the studio's logo: warm off-white #EEEDE9 and near-black #161616. No colour accent. */
 @theme {
-  --color-ink: #1d1d1f;
-  --color-graphite: #161617;
-  --color-fog: #f5f5f7;
-  --color-hairline: #d2d2d7;
-  --color-steel: #6e6e73;
-  --color-ash: #a1a1a6;
-  --color-champagne: #c8a97e;
-  --color-champagne-deep: #86693f;
+  --color-ink: #161616;
+  --color-coal: #212121;
+  --color-paper: #eeede9;
+  --color-bone: #f7f6f3;
+  --color-hairline: #d3d1ca;
+  --color-steel: #66645f;
+  --color-ash: #a9a7a1;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -23,7 +24,7 @@ html {
 }
 
 body {
-  background: #fff;
+  background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 1.0625rem;
@@ -44,25 +45,31 @@ body {
     text-wrap: pretty;
   }
   ::selection {
-    background: var(--color-champagne);
-    color: #000;
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .on-dark ::selection,
+  .on-dark::selection {
+    background: var(--color-paper);
+    color: var(--color-ink);
   }
   :focus-visible {
-    outline: 2px solid var(--color-champagne-deep);
+    outline: 2px solid var(--color-ink);
     outline-offset: 3px;
   }
   .on-dark :focus-visible,
   .on-dark:focus-visible {
-    outline-color: var(--color-champagne);
+    outline-color: var(--color-paper);
   }
 }
 
+@layer components {
 /* Type scale: big, tight, few words */
 .t-display {
   font-weight: 600;
   letter-spacing: -0.048em;
   line-height: 0.96;
-  font-size: clamp(3.25rem, 10.5vw, 8rem);
+  font-size: clamp(3rem, 9.6vw, 7.25rem);
 }
 .t-h2 {
   font-weight: 600;
@@ -89,6 +96,42 @@ body {
   line-height: 1.3;
 }
 
+/* The studio wordmark: italic serif "stella" run into heavy sans "white", then spaced caps (from the logo) */
+.lockup {
+  font-size: var(--wm, 3rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  text-align: center;
+}
+.lockup-studio {
+  font-family: var(--font-sans);
+  font-size: max(0.75rem, 0.2em);
+  font-weight: 500;
+  letter-spacing: 0.62em;
+  padding-left: 0.62em;
+  margin-top: 1.5em;
+  text-transform: uppercase;
+}
+.lockup-left {
+  align-items: flex-start;
+  text-align: left;
+}
+.lockup-left .lockup-studio,
+.lockup-left .lockup-meta {
+  padding-left: 0;
+}
+.lockup-meta {
+  font-family: var(--font-sans);
+  font-size: max(0.6875rem, 0.13em);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  padding-left: 0.2em;
+  margin-top: 2.4em;
+  text-transform: uppercase;
+}
+
 /* Full-bleed scroller gutters: the first card lines up with the page container */
 .gutter {
   --gutter: max(1.5rem, calc((100vw - 1280px) / 2 + 2.5rem));
@@ -113,6 +156,7 @@ body {
     transform: translateY(-6px);
     box-shadow: 0 2px 4px rgb(0 0 0 / 0.05), 0 32px 56px -24px rgb(0 0 0 / 0.28);
   }
+}
 }
 
 /* FAQ accordion (details/summary) */

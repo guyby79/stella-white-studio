@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import { PHOTOS, photoUrl } from "@/lib/site";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -10,9 +10,19 @@ const inter = Inter({
   display: "swap",
 });
 
+// Used only for the italic "stella" in the wordmark, to match the studio's logo
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  style: ["italic"],
+  weight: ["500", "600"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+
 const title = "Stella White Studio | Event portraits, finished by hand";
 const description =
   "Studio-lit black-and-white portraits at weddings, parties and launches. Backdrops and prints made by hand for your event. Travel on request.";
+const logo = `${SITE_URL}stella-white-logo.jpg`;
 
 export const metadata: Metadata = {
   title,
@@ -24,25 +34,25 @@ export const metadata: Metadata = {
     description,
     type: "website",
     siteName: "Stella White Studio",
-    images: [{ url: photoUrl(PHOTOS.hero.id, 1200, 630, PHOTOS.hero.focal), width: 1200, height: 630, alt: PHOTOS.hero.alt }],
+    images: [{ url: logo, width: 500, height: 500, alt: "Stella White Studio, event portraits" }],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title,
     description,
-    images: [photoUrl(PHOTOS.hero.id, 1200, 630, PHOTOS.hero.focal)],
+    images: [logo],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#eeede9",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body>{children}</body>
     </html>
   );

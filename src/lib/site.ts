@@ -4,6 +4,20 @@
 export const SITE_NAME = "Stella White Studio";
 export const INSTAGRAM_URL = "https://www.instagram.com/stellawhitestudio/";
 export const INSTAGRAM_HANDLE = "@stellawhitestudio";
+export const BIO_LINE = "Event portraits · Est. 2024";
+
+/** Where the site is served from. Update when it moves to its own domain. */
+export const SITE_URL = "https://guyby79.github.io/stella-white-studio/";
+/** Plain <img> tags need the base path added by hand (next.config.mjs sets this). */
+export const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+export const LOGO_SRC = `${BASE_PATH}/stella-white-logo.jpg`;
+
+/**
+ * Real Instagram posts to embed, e.g. "https://www.instagram.com/p/AbCdEfGhIjK/".
+ * Leave empty and the page shows the illustrative tile grid instead. When it has
+ * items, the official Instagram embeds render and embed.js loads (only then).
+ */
+export const INSTAGRAM_POST_URLS: string[] = [];
 
 const UNSPLASH = "https://images.unsplash.com";
 
@@ -49,6 +63,19 @@ export const PHOTOS = {
     focal: { x: 0.5, y: 0.35 },
   },
 } satisfies Record<string, Photo>;
+
+/** Illustrative tiles shown until real posts are embedded. Same stock imagery as the rest of the preview. */
+export const FEED_TILES: Photo[] = [
+  { id: "photo-1612928414075-bc722ade44f1", alt: "Black-and-white portrait of a woman with curly hair against a light backdrop", focal: { x: 0.5, y: 0.35 } },
+  { id: "photo-1614750880774-6e5cb149607b", alt: "A bride in a long gown beside an arched window, in black and white", focal: { x: 0.5, y: 0.55 } },
+  { id: "photo-1557676715-93b39337b8ee", alt: "A hand-lettered card beside an inkwell and calligraphy pen", focal: { x: 0.4, y: 0.5 } },
+  { id: "photo-1688559688736-140e6cbd2c17", alt: "Two hands raising champagne glasses in a toast, in black and white", focal: { x: 0.45, y: 0.4 } },
+  { id: "photo-1634729108740-ea8aa195634a", alt: "A couple in flower crowns laughing together, in black and white", focal: { x: 0.5, y: 0.4 } },
+  { id: "photo-1574514120529-364d014b9a0a", alt: "Framed black-and-white prints on a white wall", focal: { x: 0.5, y: 0.45 } },
+  { id: "photo-1620122303020-87ec826cf70d", alt: "Black-and-white studio portrait of a woman with slicked-back hair", focal: { x: 0.5, y: 0.42 } },
+  { id: "photo-1755862836360-92b2f0696155", alt: "Guests dancing and laughing at a party, in black and white", focal: { x: 0.55, y: 0.5 } },
+  { id: "photo-1759209816487-0677a49f01b8", alt: "A strip of black-and-white photo-booth portraits with hand-drawn finishing", focal: { x: 0.5, y: 0.4 } },
+];
 
 export const STATEMENT =
   "We bring a real portrait studio to your party. Studio light, a backdrop made for the night, and a black-and-white print in every guest’s hand within a minute.";
