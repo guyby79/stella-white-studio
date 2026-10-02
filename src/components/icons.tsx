@@ -31,11 +31,18 @@ export function InstagramIcon(props: P) {
   );
 }
 
-export function ArrowIcon(props: P) {
+export function ChevronRight(props: P) {
   return (
-    <Base {...props}>
-      <path d="M4 12h15" />
-      <path d="M13.5 6.5L19 12l-5.5 5.5" />
+    <Base {...props} strokeWidth={1.75}>
+      <path d="M9 5l7 7-7 7" />
+    </Base>
+  );
+}
+
+export function ChevronLeft(props: P) {
+  return (
+    <Base {...props} strokeWidth={1.75}>
+      <path d="M15 5l-7 7 7 7" />
     </Base>
   );
 }
@@ -43,8 +50,8 @@ export function ArrowIcon(props: P) {
 export function MenuIcon(props: P) {
   return (
     <Base {...props} strokeWidth={1.5}>
-      <path d="M4 8h16" />
-      <path d="M4 16h16" />
+      <path d="M4 9h16" />
+      <path d="M4 15h16" />
     </Base>
   );
 }
@@ -60,7 +67,7 @@ export function CloseIcon(props: P) {
 
 export function PlusIcon(props: P) {
   return (
-    <Base {...props} strokeWidth={1.25}>
+    <Base {...props} strokeWidth={1.5}>
       <path d="M12 5v14" />
       <path d="M5 12h14" />
     </Base>
@@ -70,14 +77,13 @@ export function PlusIcon(props: P) {
 export function Monogram({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 48 48" className={className} aria-hidden="true" focusable="false">
-      <circle cx="24" cy="24" r="22.5" fill="none" stroke="currentColor" strokeWidth="1" />
-      <circle cx="24" cy="24" r="19.5" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.55" />
+      <circle cx="24" cy="24" r="22.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
       <text
         x="24"
-        y="30.5"
+        y="29.5"
         textAnchor="middle"
         fill="currentColor"
-        style={{ fontFamily: "var(--font-cormorant), Georgia, serif", fontSize: 19, fontWeight: 500, letterSpacing: 1 }}
+        style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: 16, fontWeight: 600, letterSpacing: -0.5 }}
       >
         SW
       </text>
@@ -168,30 +174,4 @@ export function FeatureIcon({ name, ...props }: P & { name: IconName }) {
         </Base>
       );
   }
-}
-
-export function ContrastIcon(props: P) {
-  return (
-    <Base {...props}>
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" />
-    </Base>
-  );
-}
-
-export function BrushIcon(props: P) {
-  return (
-    <Base {...props}>
-      <path d="M4 20c3 0 4.2-1.6 4.2-3.6L17.5 4 20 6.5 10.6 15.8C10.2 18 8.6 20 4 20z" />
-    </Base>
-  );
-}
-
-export function CompassIcon(props: P) {
-  return (
-    <Base {...props}>
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M15.6 8.4l-2 5.2-5.2 2 2-5.2z" />
-    </Base>
-  );
 }

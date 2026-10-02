@@ -29,99 +29,63 @@ export type Photo = { id: string; alt: string; focal?: Focal };
 
 export const PHOTOS = {
   hero: {
-    id: "photo-1688559688736-140e6cbd2c17",
-    alt: "Two hands raising champagne glasses in a toast, in dramatic black and white",
-    focal: { x: 0.42, y: 0.42 },
+    id: "photo-1634729108740-ea8aa195634a",
+    alt: "A couple in flower crowns laugh together, holding a bouquet, in black and white",
+    focal: { x: 0.5, y: 0.32 },
   },
   studio: {
     id: "photo-1620122303020-87ec826cf70d",
-    alt: "Black-and-white studio portrait of a woman with slicked-back hair, softly lit against a graduated backdrop",
+    alt: "Black-and-white studio portrait of a woman with slicked-back hair against a graduated backdrop",
+    focal: { x: 0.5, y: 0.45 },
   },
   atelier: {
     id: "photo-1557676715-93b39337b8ee",
     alt: "A hand-lettered card beside an inkwell and calligraphy pen on black-and-white splatter paper",
+    focal: { x: 0.45, y: 0.5 },
   },
   keepsake: {
     id: "photo-1574514120529-364d014b9a0a",
     alt: "Framed black-and-white prints arranged together on a white wall",
-  },
-  introTall: {
-    id: "photo-1612928414075-bc722ade44f1",
-    alt: "Black-and-white portrait of a woman with curly hair against a light studio backdrop",
-  },
-  introSmall: {
-    id: "photo-1759209816487-0677a49f01b8",
-    alt: "A strip of black-and-white photo-booth portraits finished with hand-drawn halo, hearts and horns",
-  },
-  band: {
-    id: "photo-1504227986464-b07ae4f486f4",
-    alt: "A couple walking away along a dark garden path, in black and white",
+    focal: { x: 0.5, y: 0.35 },
   },
 } satisfies Record<string, Photo>;
 
-export const EXPERIENCES = [
-  {
-    number: "01",
-    name: "The Studio",
-    tagline: "Black-and-white portraits under real studio light.",
-    body:
-      "A proper portrait set-up at the heart of your party: soft studio lighting, a clean backdrop and an attendant who guides every pose, from solo glamour to the whole family. Prints are ready in about a minute, so every guest leaves with something to hold.",
-    details: [
-      "Real studio lighting, never a ring light",
-      "Guided posing for every guest",
-      "Prints in about a minute",
-    ],
-    photo: PHOTOS.studio,
-    focal: { x: 0.5, y: 0.4 },
+export const STATEMENT =
+  "We bring a real portrait studio to your party. Studio light, a backdrop made for the night, and a black-and-white print in every guest’s hand within a minute.";
+
+export const EXPERIENCES = {
+  studio: {
+    label: "The Studio",
+    title: "Studio light. At your party.",
+    body: "Real lights, a clean backdrop and someone to guide every pose. Prints in about a minute.",
   },
-  {
-    number: "02",
-    name: "The Atelier",
-    tagline: "Bespoke backdrops and print designs, made for your event.",
-    body:
-      "This is where the handwork happens. We design and make the backdrop and the print layout around you: a monogram, a painted floral, an illustrated border, a line in your own handwriting. Both are created for your event alone.",
-    details: [
-      "Monograms and hand-lettered names",
-      "Painted florals and illustrated borders",
-      "Backdrop and prints designed as a pair",
-    ],
-    photo: PHOTOS.atelier,
-    focal: { x: 0.45, y: 0.5 },
+  atelier: {
+    label: "The Atelier",
+    title: "Backdrops, made by hand.",
+    body: "Bespoke monograms, painted florals and illustrated borders, designed with you for one event.",
   },
-  {
-    number: "03",
-    name: "The Keepsake",
-    tagline: "A hand-finished guest album or a framed portrait wall.",
-    body:
-      "The evening’s portraits, turned into something to keep. Choose a guest album that fills up as the night goes on, or a wall of framed prints for your entrance or reception. Each piece is finished by hand and ready to display.",
-    details: [
-      "A guest album with room for a note beside every portrait",
-      "A framed portrait wall for your entrance or reception",
-      "Finished by hand, ready to display",
-    ],
-    photo: PHOTOS.keepsake,
-    focal: { x: 0.5, y: 0.5 },
+  keepsake: {
+    label: "The Keepsake",
+    title: "A keepsake you can hold.",
+    body: "A guest album that fills as the night goes on, or a wall of framed portraits. Finished by hand.",
   },
-];
+};
 
 export const STEPS = [
   {
-    number: "01",
-    title: "Enquire",
-    body:
-      "Message us on Instagram with your date, the place and the feeling you are after. We will tell you if we are free and how we would approach it.",
+    number: "1",
+    title: "Message us.",
+    body: "Send the date, the place and the mood on Instagram. We’ll tell you if we’re free.",
   },
   {
-    number: "02",
-    title: "Design",
-    body:
-      "We talk through the look together: the backdrop, the print design, the finishing touches. You see the plan before anything is made.",
+    number: "2",
+    title: "We design it.",
+    body: "Backdrop, print layout, finishing. You approve the plan before anything is made.",
   },
   {
-    number: "03",
-    title: "Celebrate",
-    body:
-      "On the day we arrive early, set up the studio and look after every guest. You enjoy your party; we make the portraits.",
+    number: "3",
+    title: "We set up. You party.",
+    body: "We arrive early, build the studio and look after every guest.",
   },
 ];
 
@@ -137,17 +101,17 @@ export type IconName =
   | "gallery"
   | "download";
 
-export const INCLUDED: { icon: IconName; title: string; body: string }[] = [
-  { icon: "prints", title: "Unlimited prints", body: "Print as many portraits as your guests like, handed over within about a minute of the shot." },
-  { icon: "share", title: "Instant digital sharing", body: "Portraits sent straight to guests’ phones, so they can share while the party is still going." },
-  { icon: "light", title: "Real studio lighting", body: "Soft, flattering light that looks wonderful on every skin tone and every outfit." },
-  { icon: "backdrop", title: "A bespoke backdrop", body: "Designed and finished by hand for your event." },
-  { icon: "props", title: "Curated props", body: "A small, thoughtful selection. Never a pile of plastic." },
-  { icon: "design", title: "Custom print design", body: "Your names, date or monogram on every print." },
-  { icon: "attendant", title: "A dedicated attendant", body: "Someone friendly to guide poses and keep the line moving." },
-  { icon: "setup", title: "Setup and teardown", body: "We arrive early, set up quietly and leave the space as we found it." },
-  { icon: "gallery", title: "A private online gallery", body: "Every portrait in one place, for you and your guests." },
-  { icon: "download", title: "Downloadable originals", body: "High-resolution files to keep, sent after the event." },
+export const INCLUDED: { icon: IconName; title: string; body: string; wide?: boolean }[] = [
+  { icon: "prints", title: "Prints, as many as you like", body: "Every guest leaves with one, ready in about a minute.", wide: true },
+  { icon: "share", title: "Instant sharing", body: "Portraits on guests’ phones before the song ends." },
+  { icon: "light", title: "Real studio light", body: "Soft, even and kind to everyone." },
+  { icon: "backdrop", title: "A bespoke backdrop", body: "Designed and finished by hand." },
+  { icon: "design", title: "Your design on every print", body: "Names, a date or a monogram." },
+  { icon: "attendant", title: "An attendant", body: "Guides the poses, keeps the line moving and looks after the kit.", wide: true },
+  { icon: "setup", title: "Setup and teardown", body: "In early. Out clean." },
+  { icon: "props", title: "Props", body: "A short list of good ones." },
+  { icon: "gallery", title: "A private gallery", body: "Every portrait in one place." },
+  { icon: "download", title: "Original files", body: "High-resolution downloads after the event." },
 ];
 
 export const OCCASIONS: { label: string; photo: Photo }[] = [
@@ -157,7 +121,7 @@ export const OCCASIONS: { label: string; photo: Photo }[] = [
   },
   {
     label: "Engagements",
-    photo: { id: "photo-1634729108740-ea8aa195634a", alt: "A couple wearing flower crowns, laughing together with a bouquet, in black and white", focal: { x: 0.5, y: 0.45 } },
+    photo: { id: "photo-1595662000432-f8cdba893fa4", alt: "Two pairs of hands exchanging a ring, in black and white", focal: { x: 0.5, y: 0.5 } },
   },
   {
     label: "Birthdays",
@@ -173,44 +137,39 @@ export const OCCASIONS: { label: string; photo: Photo }[] = [
   },
   {
     label: "Anniversaries",
-    photo: { id: "photo-1595662000432-f8cdba893fa4", alt: "Two pairs of hands exchanging a ring, in black and white", focal: { x: 0.5, y: 0.5 } },
+    photo: { id: "photo-1633638990410-c828b4f27f24", alt: "A couple close together under a veil, soft and bright, in black and white", focal: { x: 0.5, y: 0.4 } },
   },
 ];
+
+export const OCCASION_NOTE = "Also graduations, gallery openings, hen parties and private dinners.";
 
 export const FAQS = [
   {
-    q: "What is Stella White Studio?",
-    a: "We bring a hand-finished portrait studio to your event: real studio lighting, a bespoke backdrop, black-and-white prints in about a minute and a friendly attendant who looks after your guests.",
-  },
-  {
     q: "How do I check my date?",
-    a: "Message us on Instagram with your date and the place. We will let you know whether we are free and what we would suggest.",
+    a: "Message us on Instagram with the date and the place. We’ll tell you if we’re free.",
   },
   {
     q: "Do you travel?",
-    a: "Travel on request. Tell us where your event is and we will talk it through.",
+    a: "Travel on request. Tell us where and we’ll work it out.",
   },
   {
-    q: "Can the backdrop and prints match our theme?",
-    a: "Yes, that is the heart of The Atelier. We design the backdrop and the print layout around your colours, names, monogram or artwork.",
+    q: "Can the backdrop match our theme?",
+    a: "That’s what The Atelier is for. Send colours, names, a monogram or artwork and we’ll design around it.",
   },
   {
-    q: "Are the portraits only in black and white?",
-    a: "Black and white is our signature: it flatters everyone and prints beautifully. If you have something different in mind, tell us and we will see what is possible.",
+    q: "Is everything black and white?",
+    a: "It’s our signature, and it flatters everyone. If you want something else, ask.",
   },
   {
-    q: "Do guests get their portraits on the night?",
-    a: "Yes. Prints are ready in about a minute and portraits are shared digitally on the spot, with a private online gallery to follow.",
+    q: "Do guests get their photos on the night?",
+    a: "Prints in about a minute and digital copies on the spot, with a private gallery to follow.",
   },
   {
-    q: "How much does it cost?",
-    a: "Every event is different, so we quote once we know your date, your guest numbers and the look you want. Pricing details will be added to this page soon.",
+    q: "What does it cost?",
+    a: "It depends on the date, the guest count and the design. Pricing will appear here soon. Until then, message us.",
   },
   {
-    q: "Do you work with planners, venues and brands?",
-    a: "Happily. Message us and we will coordinate with your planner, venue or brand team directly.",
+    q: "Do you work with planners and venues?",
+    a: "Yes. Message us and we’ll talk to them directly.",
   },
 ];
-
-export const OCCASION_NOTE =
-  "Also: graduations, launches, gallery openings, hen parties and private dinners.";

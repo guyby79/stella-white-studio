@@ -1,17 +1,11 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Header from "@/components/header";
-import Cta from "@/components/cta";
+import Cta, { TextLink } from "@/components/cta";
 import Photo from "@/components/photo";
-import {
-  ArrowIcon,
-  BrushIcon,
-  CompassIcon,
-  ContrastIcon,
-  FeatureIcon,
-  InstagramIcon,
-  Monogram,
-  PlusIcon,
-} from "@/components/icons";
+import Carousel from "@/components/carousel";
+import Motion from "@/components/motion";
+import Words from "@/components/words";
+import { FeatureIcon, InstagramIcon, Monogram, PlusIcon } from "@/components/icons";
 import {
   EXPERIENCES,
   FAQS,
@@ -22,36 +16,37 @@ import {
   OCCASION_NOTE,
   PHOTOS,
   SITE_NAME,
+  STATEMENT,
   STEPS,
   photoUrl,
 } from "@/lib/site";
 
+const idx = (i: number) => ({ "--i": i }) as CSSProperties;
+
 function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12 ${className}`}>{children}</div>;
+  return <div className={`mx-auto w-full max-w-[1280px] px-6 sm:px-8 lg:px-10 ${className}`}>{children}</div>;
 }
 
-function Heading({
+function SectionHead({
   eyebrow,
   title,
   intro,
   dark = false,
-  center = false,
   id,
 }: {
   eyebrow: string;
   title: string;
   intro?: string;
   dark?: boolean;
-  center?: boolean;
   id?: string;
 }) {
   return (
-    <div className={`reveal ${center ? "mx-auto max-w-3xl text-center" : "max-w-2xl"}`}>
-      <p className={`eyebrow ${dark ? "text-champagne" : "text-champagne-deep"}`}>{eyebrow}</p>
-      <h2 id={id} className="mt-5 font-serif text-[clamp(2.3rem,5vw,3.9rem)] font-light leading-[1.05]">
+    <div data-reveal className="max-w-3xl">
+      <p className={`t-eyebrow ${dark ? "text-champagne" : "text-champagne-deep"}`}>{eyebrow}</p>
+      <h2 id={id} className="t-h2 mt-4">
         {title}
       </h2>
-      {intro ? <p className={`mt-6 text-lg ${dark ? "text-white/70" : "text-mute"}`}>{intro}</p> : null}
+      {intro ? <p className={`t-sub mt-6 ${dark ? "text-ash" : "text-steel"}`}>{intro}</p> : null}
     </div>
   );
 }
@@ -59,175 +54,139 @@ function Heading({
 function Hero() {
   const hero = PHOTOS.hero;
   return (
-    <section
-      id="top"
-      className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-ink text-center text-white"
-    >
-      <picture>
-        <source media="(max-width: 767px)" srcSet={photoUrl(hero.id, 900, 1500, { x: 0.45, y: 0.5 })} />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={photoUrl(hero.id, 2200, 1375, hero.focal)}
-          alt={hero.alt}
-          width={2200}
-          height={1375}
-          fetchPriority="high"
-          decoding="async"
-          className="hero-zoom absolute inset-0 -z-20 h-full w-full object-cover"
-        />
-      </picture>
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgb(0_0_0/0.55),rgb(0_0_0/0.3)_45%,rgb(0_0_0/0.7))]" />
-      <div className="grain absolute inset-0 -z-10" aria-hidden="true" />
-
-      <Container className="py-32">
-        <p className="hero-in eyebrow text-champagne" style={{ "--d": "0.15s" } as React.CSSProperties}>
-          Bespoke event portraits
+    <section id="top" className="on-dark bg-black text-white">
+      <Container className="pb-12 pt-32 text-center lg:pb-16 lg:pt-40">
+        <p className="t-eyebrow text-champagne">Stella White Studio</p>
+        <h1 className="t-display mx-auto mt-4 max-w-[16ch]">Portraits, printed in a minute.</h1>
+        <p className="t-sub mx-auto mt-6 max-w-2xl text-ash">
+          Studio-lit black and white at your wedding, party or launch. Backdrops and prints made by hand, for your event.
         </p>
-        <h1
-          className="hero-in mx-auto mt-6 max-w-4xl font-serif text-[clamp(3rem,8.4vw,6.75rem)] font-light leading-[0.98]"
-          style={{ "--d": "0.3s" } as React.CSSProperties}
-        >
-          Your night, in its best light.
-        </h1>
-        <p
-          className="hero-in mx-auto mt-7 max-w-xl text-base text-white/80 sm:text-lg"
-          style={{ "--d": "0.5s" } as React.CSSProperties}
-        >
-          Studio-lit black-and-white portraits at weddings, parties and brand events, with backdrops and prints made by hand
-          for you.
-        </p>
-        <div className="hero-in mt-10 flex flex-col items-center gap-5" style={{ "--d": "0.7s" } as React.CSSProperties}>
-          <Cta kicker="Check your date" tone="champagne" />
-          <p className="eyebrow text-[0.62rem] text-white/60">Travel on request</p>
+        <div className="mt-10 flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-8">
+          <Cta tone="champagne" />
+          <TextLink href="#how-it-works" tone="dark">
+            How it works
+          </TextLink>
         </div>
       </Container>
 
-      <a
-        href="#intro"
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-white/60 transition-colors hover:text-white sm:flex"
-        aria-label="Scroll to the introduction"
-      >
-        <span className="eyebrow text-[0.58rem]">Scroll</span>
-        <span className="cue-line block h-10 w-px bg-white/50" />
-      </a>
+      <div className="px-3 pb-3 sm:px-4 sm:pb-4">
+        <div className="relative mx-auto aspect-[4/5] w-full max-w-[1600px] overflow-hidden rounded-[28px] bg-graphite sm:aspect-[16/10] sm:rounded-[40px] lg:aspect-[16/9]">
+          <picture>
+            <source media="(max-width: 639px)" srcSet={photoUrl(hero.id, 900, 1125, { x: 0.5, y: 0.4 })} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={photoUrl(hero.id, 2400, 1350, hero.focal)}
+              alt={hero.alt}
+              width={2400}
+              height={1350}
+              fetchPriority="high"
+              decoding="async"
+              className="settle h-full w-full object-cover"
+            />
+          </picture>
+        </div>
+      </div>
     </section>
   );
 }
 
-function Intro() {
-  const facts = [
-    { icon: <ContrastIcon className="h-6 w-6" />, title: "Black and white, by design", body: "Timeless, flattering, and beautiful in print." },
-    { icon: <BrushIcon className="h-6 w-6" />, title: "Finished by hand", body: "Backdrops and prints made for your event." },
-    { icon: <CompassIcon className="h-6 w-6" />, title: "Travel on request", body: "Tell us where, and we will talk it through." },
-  ];
+function Statement() {
   return (
-    <section id="intro" className="bg-paper py-24 lg:py-36">
-      <Container className="grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
-        <div>
-          <div className="reveal">
-            <p className="eyebrow text-champagne-deep">The studio</p>
-            <h2 className="mt-5 font-serif text-[clamp(2.4rem,5vw,4.1rem)] font-light leading-[1.04]">
-              Portraits with presence, finished by hand.
-            </h2>
-            <p className="mt-8 text-lg text-ink/80">
-              Stella White Studio brings a small portrait studio to the heart of your celebration. Real lighting, a backdrop
-              designed around your event, and a gentle guide who helps every guest find their best angle.
-            </p>
-            <p className="mt-5 text-mute">
-              Every portrait is made in black and white, printed within moments and finished with care, so it feels like a
-              keepsake rather than a snapshot. No two events look alike, and neither do our backdrops.
-            </p>
-          </div>
-          <ul className="mt-12 grid gap-8 sm:grid-cols-3">
-            {facts.map((f) => (
-              <li key={f.title} className="reveal border-t border-line pt-5">
-                <span className="text-champagne-deep">{f.icon}</span>
-                <h3 className="mt-3 font-serif text-xl leading-snug">{f.title}</h3>
-                <p className="mt-1.5 text-sm text-mute">{f.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="relative pb-12 sm:pb-16 lg:pb-14">
-          <div className="relative ml-auto aspect-[4/5] w-[88%] overflow-hidden bg-bone">
-            <Photo
-              id={PHOTOS.introTall.id}
-              alt={PHOTOS.introTall.alt}
-              ratio={[4, 5]}
-              sizes="(min-width: 1024px) 40vw, 80vw"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="absolute bottom-0 left-0 aspect-[4/5] w-[44%] overflow-hidden border-[6px] border-paper bg-bone shadow-[0_24px_60px_-20px_rgb(0_0_0/0.45)] sm:border-8">
-            <Photo
-              id={PHOTOS.introSmall.id}
-              alt={PHOTOS.introSmall.alt}
-              ratio={[4, 5]}
-              widths={[300, 520, 800]}
-              sizes="(min-width: 1024px) 20vw, 40vw"
-              className="h-full w-full object-cover"
-            />
-          </div>
-        </div>
+    <section className="bg-white py-24 lg:py-40" aria-label="About the studio">
+      <Container>
+        <p
+          data-scrollwords
+          className="max-w-5xl text-[clamp(2rem,5.2vw,4.25rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-ink"
+        >
+          <Words text={STATEMENT} />
+        </p>
       </Container>
     </section>
   );
 }
 
 function Experiences() {
+  const e = EXPERIENCES;
+  const fill =
+    "absolute inset-0 h-full w-full object-cover transition-transform duration-[1600ms] ease-out group-hover:scale-[1.04]";
   return (
-    <section id="experiences" className="bg-bone py-24 lg:py-36">
+    <section id="experiences" className="bg-fog py-24 lg:py-40">
       <Container>
-        <Heading
-          center
-          eyebrow="The experiences"
-          title="Three ways to bring the studio to your event"
-          intro="Choose one, or combine them. Each is designed around your date, your space and your guests."
-        />
-        <div className="mt-20 space-y-24 lg:mt-28 lg:space-y-40">
-          {EXPERIENCES.map((e, i) => (
-            <article key={e.name} className="grid items-center gap-10 lg:grid-cols-2 lg:gap-24">
-              <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                <div className="group relative aspect-[4/5] overflow-hidden bg-ink-2">
-                  <Photo
-                    id={e.photo.id}
-                    alt={e.photo.alt}
-                    ratio={[4, 5]}
-                    focal={e.focal}
-                    sizes="(min-width: 1024px) 45vw, 92vw"
-                    className="h-full w-full object-cover grayscale-[0.15] transition-transform duration-[1400ms] ease-lux group-hover:scale-[1.04]"
-                  />
-                  <span className="pointer-events-none absolute inset-4 border border-white/35 transition-all duration-700 ease-lux group-hover:inset-6" />
-                </div>
-              </div>
-              <div className={`reveal ${i % 2 === 1 ? "lg:order-1" : ""}`}>
-                <p className="font-serif text-[5rem] font-light italic leading-none text-champagne-deep/80 sm:text-[6.5rem]">
-                  {e.number}
-                </p>
-                <h3 className="mt-2 font-serif text-[clamp(2.2rem,4vw,3.3rem)] font-light leading-[1.05]">{e.name}</h3>
-                <p className="mt-3 font-serif text-[1.45rem] italic leading-snug text-champagne-deep">{e.tagline}</p>
-                <p className="mt-6 max-w-xl text-ink/80">{e.body}</p>
-                <ul className="mt-8 max-w-xl space-y-3 border-t border-line pt-6">
-                  {e.details.map((d) => (
-                    <li key={d} className="flex items-start gap-4 text-[0.95rem]">
-                      <span className="mt-[0.82em] h-px w-6 shrink-0 bg-champagne-deep" />
-                      <span>{d}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href={INSTAGRAM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-underline eyebrow mt-9 inline-flex items-center gap-3 pb-1.5 text-[0.72rem] text-ink hover:text-champagne-deep"
-                >
+        <SectionHead eyebrow="What we do" title="Pick one. Or all three." />
+        <div className="mt-16 grid gap-4 lg:mt-24 lg:grid-cols-6 lg:gap-6">
+          <div data-reveal className="lg:col-span-4">
+            <article className="lift on-dark group grid h-full overflow-hidden rounded-[28px] bg-black text-white lg:grid-cols-2">
+              <div className="order-2 flex flex-col justify-end p-8 lg:order-1 lg:min-h-[640px] lg:p-12">
+                <p className="t-eyebrow text-champagne">{e.studio.label}</p>
+                <h3 className="t-h3 mt-3 max-w-sm">{e.studio.title}</h3>
+                <p className="mt-4 max-w-sm text-[17px] text-white/75">{e.studio.body}</p>
+                <TextLink tone="dark" className="mt-6">
                   Message us on Instagram
-                  <ArrowIcon className="h-4 w-4" />
-                </a>
+                </TextLink>
+              </div>
+              <div className="relative order-1 aspect-[4/5] overflow-hidden lg:order-2 lg:aspect-auto">
+                <Photo
+                  id={PHOTOS.studio.id}
+                  alt={PHOTOS.studio.alt}
+                  ratio={[3, 4]}
+                  focal={PHOTOS.studio.focal}
+                  widths={[480, 800, 1100]}
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                  className={fill}
+                />
+                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black to-transparent lg:hidden" />
+                <div className="absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-black to-transparent lg:block" />
               </div>
             </article>
-          ))}
+          </div>
+
+          <div data-reveal style={idx(1)} className="lg:col-span-2">
+            <article className="lift group flex h-full min-h-[560px] flex-col overflow-hidden rounded-[28px] bg-white lg:min-h-[640px]">
+              <div className="p-8 lg:p-10">
+                <p className="t-eyebrow text-champagne-deep">{e.atelier.label}</p>
+                <h3 className="t-h3 mt-3">{e.atelier.title}</h3>
+                <p className="mt-4 text-[17px] text-steel">{e.atelier.body}</p>
+                <TextLink tone="light" className="mt-6">
+                  Message us on Instagram
+                </TextLink>
+              </div>
+              <div className="relative mt-auto min-h-[240px] flex-1 overflow-hidden">
+                <Photo
+                  id={PHOTOS.atelier.id}
+                  alt={PHOTOS.atelier.alt}
+                  ratio={[4, 3]}
+                  focal={PHOTOS.atelier.focal}
+                  widths={[480, 800, 1100]}
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                  className={fill}
+                />
+              </div>
+            </article>
+          </div>
+
+          <div data-reveal className="lg:col-span-6">
+            <article className="lift on-dark group grid overflow-hidden rounded-[28px] bg-graphite text-white lg:grid-cols-2">
+              <div className="flex flex-col justify-center p-8 lg:p-16">
+                <p className="t-eyebrow text-champagne">{e.keepsake.label}</p>
+                <h3 className="t-h3 mt-3 max-w-md">{e.keepsake.title}</h3>
+                <p className="mt-4 max-w-md text-[17px] text-ash">{e.keepsake.body}</p>
+                <TextLink tone="dark" className="mt-6">
+                  Message us on Instagram
+                </TextLink>
+              </div>
+              <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:min-h-[520px]">
+                <Photo
+                  id={PHOTOS.keepsake.id}
+                  alt={PHOTOS.keepsake.alt}
+                  ratio={[5, 4]}
+                  focal={PHOTOS.keepsake.focal}
+                  widths={[640, 1000, 1400]}
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className={fill}
+                />
+              </div>
+            </article>
+          </div>
         </div>
       </Container>
     </section>
@@ -236,28 +195,27 @@ function Experiences() {
 
 function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-ink py-24 text-white lg:py-36">
+    <section id="how-it-works" className="on-dark bg-black py-24 text-white lg:py-40">
       <Container>
-        <Heading
-          dark
-          eyebrow="How it works"
-          title="From first message to the last print"
-          intro="Three simple steps. We look after the details."
-        />
-        <ol className="mt-16 grid gap-14 lg:mt-24 lg:grid-cols-3 lg:gap-14">
-          {STEPS.map((s) => (
-            <li
-              key={s.number}
-              className="reveal relative border-t border-white/15 pt-8 before:absolute before:-top-px before:left-0 before:h-px before:w-16 before:bg-champagne"
-            >
-              <p className="font-serif text-[5.5rem] font-light italic leading-none text-champagne">{s.number}</p>
-              <h3 className="mt-4 font-serif text-[2rem] font-light leading-tight">{s.title}</h3>
-              <p className="mt-4 max-w-sm text-white/70">{s.body}</p>
+        <SectionHead dark eyebrow="How it works" title="From first message to last print." />
+        <ol className="mt-16 grid gap-4 lg:mt-24 lg:grid-cols-3 lg:gap-6">
+          {STEPS.map((s, i) => (
+            <li key={s.number} data-reveal style={idx(i)} className="flex">
+              <div className="lift flex min-h-[320px] w-full flex-col rounded-[28px] bg-graphite p-8 lg:min-h-[400px] lg:p-10">
+                <span
+                  aria-hidden="true"
+                  className="text-[96px] font-semibold leading-none tracking-[-0.06em] text-champagne lg:text-[128px]"
+                >
+                  {s.number}
+                </span>
+                <h3 className="t-h3 mt-auto pt-12">{s.title}</h3>
+                <p className="mt-3 text-[17px] text-ash">{s.body}</p>
+              </div>
             </li>
           ))}
         </ol>
         <div className="mt-16 lg:mt-24">
-          <Cta kicker="Check your date" tone="outline" />
+          <Cta tone="champagne" />
         </div>
       </Container>
     </section>
@@ -266,23 +224,24 @@ function HowItWorks() {
 
 function Included() {
   return (
-    <section id="included" className="bg-paper py-24 lg:py-36">
+    <section id="included" className="bg-white py-24 lg:py-40">
       <Container>
-        <Heading
-          center
-          eyebrow="What’s included"
-          title="Included in every booking"
-          intro="The details that make the studio feel effortless, for you and for your guests."
-        />
-        <ul className="mx-auto mt-16 grid max-w-5xl gap-x-16 border-t border-line sm:grid-cols-2 lg:mt-24">
-          {INCLUDED.map((item) => (
-            <li key={item.title} className="reveal group flex gap-5 border-b border-line py-7">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line text-champagne-deep transition-colors duration-500 group-hover:border-champagne group-hover:bg-champagne group-hover:text-ink">
-                <FeatureIcon name={item.icon} className="h-6 w-6" />
-              </span>
-              <div>
-                <h3 className="font-serif text-[1.45rem] font-normal leading-tight">{item.title}</h3>
-                <p className="mt-1.5 text-[0.95rem] text-mute">{item.body}</p>
+        <SectionHead eyebrow="Included" title="In every booking." />
+        <ul className="mt-16 grid gap-4 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4 lg:gap-6">
+          {INCLUDED.map((item, i) => (
+            <li key={item.title} data-reveal style={idx(i % 4)} className={item.wide ? "lg:col-span-2" : ""}>
+              <div className="lift flex h-full min-h-[176px] flex-col justify-between rounded-[28px] bg-fog p-8 sm:min-h-[240px] lg:min-h-[280px]">
+                <FeatureIcon name={item.icon} className="h-8 w-8 text-champagne-deep" />
+                <div className="mt-8 lg:mt-12">
+                  <h3
+                    className={`font-semibold leading-[1.1] tracking-[-0.03em] ${
+                      item.wide ? "text-[28px] lg:text-[32px]" : "text-[24px]"
+                    }`}
+                  >
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-[17px] text-steel">{item.body}</p>
+                </div>
               </div>
             </li>
           ))}
@@ -294,52 +253,51 @@ function Included() {
 
 function Occasions() {
   return (
-    <section id="occasions" className="bg-ink py-24 text-white lg:py-36">
+    <section id="occasions" className="on-dark bg-black py-24 text-white lg:py-40">
       <Container>
-        <Heading dark eyebrow="Occasions" title="Made for the moments worth remembering" />
+        <SectionHead dark eyebrow="Occasions" title="Weddings to launch parties." />
       </Container>
-      <Container className="mt-14 lg:mt-20">
-        <ul className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-6 lg:overflow-visible lg:px-0 lg:pb-0">
+      <div className="mt-12 lg:mt-16">
+        <Carousel label="Occasions">
           {OCCASIONS.map((o) => (
-            <li
-              key={o.label}
-              className="group relative aspect-[3/4] w-[66%] shrink-0 snap-start overflow-hidden bg-ink-2 sm:w-[38%] lg:w-auto"
-            >
-              <Photo
-                id={o.photo.id}
-                alt={o.photo.alt}
-                ratio={[3, 4]}
-                focal={o.photo.focal}
-                widths={[360, 600, 900]}
-                sizes="(min-width: 1024px) 16vw, 66vw"
-                className="h-full w-full object-cover grayscale transition-transform duration-[1400ms] ease-lux group-hover:scale-[1.06]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-              <span className="absolute inset-x-5 bottom-5 font-serif text-[1.65rem] leading-tight">{o.label}</span>
+            <li key={o.label} className="group w-[72%] shrink-0 snap-start sm:w-[44%] lg:w-[26%]">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-[28px] bg-graphite">
+                <Photo
+                  id={o.photo.id}
+                  alt={o.photo.alt}
+                  ratio={[3, 4]}
+                  focal={o.photo.focal}
+                  widths={[360, 600, 900]}
+                  sizes="(min-width: 1024px) 26vw, (min-width: 640px) 44vw, 72vw"
+                  className="h-full w-full object-cover grayscale transition-transform duration-[1600ms] ease-out group-hover:scale-[1.05]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <p className="absolute inset-x-6 bottom-6 text-[24px] font-semibold leading-tight tracking-[-0.03em]">
+                  {o.label}
+                </p>
+              </div>
             </li>
           ))}
-        </ul>
-        <p className="mt-10 text-center text-sm text-white/60">{OCCASION_NOTE}</p>
+        </Carousel>
+      </div>
+      <Container>
+        <p className="mt-12 text-[17px] text-ash">{OCCASION_NOTE}</p>
       </Container>
     </section>
   );
 }
 
-function KindWords() {
+function Reviews() {
   return (
-    <section id="kind-words" className="bg-bone py-24 text-center lg:py-32">
+    <section className="bg-fog py-24 lg:py-32" aria-label="Reviews">
       <Container>
-        <div className="reveal mx-auto max-w-3xl">
-          <p className="eyebrow text-champagne-deep">Kind words</p>
-          <div className="mt-8 border border-dashed border-champagne-deep/50 px-6 py-12 sm:px-12">
-            <span className="block font-serif text-7xl leading-none text-champagne-deep/60" aria-hidden="true">
-              “
-            </span>
-            <p className="-mt-2 font-serif text-[clamp(1.6rem,3.4vw,2.4rem)] font-light italic leading-snug text-ink/85">
-              Kind words from our clients will appear here soon.
-            </p>
-            <p className="mt-5 text-sm text-mute">Placeholder: no testimonials have been added yet.</p>
-          </div>
+        <div
+          data-reveal
+          className="mx-auto max-w-3xl rounded-[28px] border border-dashed border-hairline px-8 py-16 text-center"
+        >
+          <p className="t-eyebrow text-champagne-deep">Reviews</p>
+          <p className="t-h3 mt-4">Kind words from our clients will appear here soon.</p>
+          <p className="mt-4 text-[15px] text-steel">Placeholder: no testimonials have been added yet.</p>
         </div>
       </Container>
     </section>
@@ -348,25 +306,25 @@ function KindWords() {
 
 function Faq() {
   return (
-    <section id="faq" className="bg-paper py-24 lg:py-36">
-      <Container className="grid gap-14 lg:grid-cols-12 lg:gap-20">
+    <section id="faq" className="bg-white py-24 lg:py-40">
+      <Container className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-28">
-            <Heading eyebrow="FAQ" title="Questions, answered" intro="Can’t see your question here? Message us on Instagram." />
-            <div className="mt-9">
-              <Cta kicker="Ask us anything" tone="ink" />
+            <SectionHead eyebrow="FAQ" title="Questions." intro="Not here? Message us on Instagram." />
+            <div className="mt-8">
+              <Cta tone="dark" />
             </div>
           </div>
         </div>
         <div className="lg:col-span-8">
-          <div className="border-t border-line">
+          <div className="border-t border-hairline">
             {FAQS.map((f) => (
-              <details key={f.q} className="group border-b border-line">
-                <summary className="flex cursor-pointer items-center justify-between gap-6 py-6 font-serif text-[clamp(1.35rem,2.4vw,1.7rem)] leading-snug transition-colors">
+              <details key={f.q} className="group border-b border-hairline">
+                <summary className="flex cursor-pointer items-center justify-between gap-6 py-6 text-[22px] font-semibold leading-snug tracking-[-0.025em] transition-colors hover:text-champagne-deep lg:text-[24px]">
                   <span>{f.q}</span>
-                  <PlusIcon className="h-6 w-6 shrink-0 text-champagne-deep transition-transform duration-500 ease-lux group-open:rotate-45" />
+                  <PlusIcon className="h-6 w-6 shrink-0 text-champagne-deep transition-transform duration-500 ease-out group-open:rotate-45" />
                 </summary>
-                <p className="max-w-2xl pb-7 pr-10 text-mute">{f.a}</p>
+                <p className="max-w-2xl pb-8 pr-12 text-[17px] text-steel">{f.a}</p>
               </details>
             ))}
           </div>
@@ -377,35 +335,19 @@ function Faq() {
 }
 
 function FinalCta() {
-  const band = PHOTOS.band;
   return (
-    <section
-      aria-labelledby="final-cta"
-      className="relative isolate overflow-hidden bg-ink py-28 text-center text-white lg:py-44"
-    >
-      <Photo
-        id={band.id}
-        alt={band.alt}
-        ratio={[16, 10]}
-        widths={[800, 1400, 2000]}
-        sizes="100vw"
-        className="absolute inset-0 -z-20 h-full w-full object-cover"
-      />
-      <div className="absolute inset-0 -z-10 bg-black/68" />
+    <section aria-labelledby="final-cta" className="on-dark bg-black py-32 text-center text-white lg:py-48">
       <Container>
-        <div className="reveal">
-          <p className="eyebrow text-champagne">Your date</p>
-          <h2
-            id="final-cta"
-            className="mx-auto mt-6 max-w-3xl font-serif text-[clamp(2.6rem,6vw,5rem)] font-light leading-[1.02]"
-          >
-            Let’s make your night look as good as it feels.
+        <div data-reveal>
+          <h2 id="final-cta" className="t-display mx-auto max-w-[16ch]">
+            Check your date.
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-white/75">
-            Tell us the date, the place and the mood. We’ll take it from there.
+          <p className="t-sub mx-auto mt-6 max-w-xl text-ash">
+            Message us on Instagram with the date, the place and the mood.
           </p>
-          <div className="mt-10 flex justify-center">
-            <Cta kicker="Enquire" tone="champagne" />
+          <div className="mt-10 flex flex-col items-center gap-6">
+            <Cta tone="champagne" />
+            <p className="text-[14px] text-ash">Travel on request.</p>
           </div>
         </div>
       </Container>
@@ -415,64 +357,58 @@ function FinalCta() {
 
 function Footer() {
   const links = [
-    { href: "#experiences", label: "Experiences" },
+    { href: "#experiences", label: "What we do" },
     { href: "#how-it-works", label: "How it works" },
-    { href: "#included", label: "What’s included" },
+    { href: "#included", label: "Included" },
     { href: "#occasions", label: "Occasions" },
     { href: "#faq", label: "FAQ" },
   ];
   return (
-    <footer className="border-t border-white/10 bg-ink text-white/70">
-      <Container className="grid gap-12 py-16 md:grid-cols-12 lg:py-20">
-        <div className="md:col-span-5">
-          <a href="#top" className="inline-flex items-center gap-3 text-white" aria-label={`${SITE_NAME}, back to top`}>
-            <Monogram className="h-11 w-11 text-champagne" />
-            <span className="flex flex-col leading-none">
-              <span className="font-serif text-2xl tracking-wide">Stella White</span>
-              <span className="eyebrow mt-1.5 text-[0.58rem] text-white/60">Studio</span>
-            </span>
-          </a>
-          <p className="mt-6 max-w-sm text-sm leading-relaxed">
-            Bespoke, hand-finished event portraits. Studio-lit black and white, with backdrops and prints made by hand.
-            Travel on request.
-          </p>
+    <footer className="bg-fog text-[12px] leading-5 text-steel">
+      <Container className="py-12">
+        <div className="grid gap-10 border-b border-hairline pb-10 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <a href="#top" className="inline-flex items-center gap-2 text-[15px] font-semibold tracking-[-0.02em] text-ink" aria-label={`${SITE_NAME}, back to top`}>
+              <Monogram className="h-6 w-6 text-champagne-deep" />
+              {SITE_NAME}
+            </a>
+            <p className="mt-4 max-w-xs">Event portraits, finished by hand. Travel on request.</p>
+          </div>
+          <nav aria-label="Footer" className="md:col-span-3">
+            <p className="font-semibold text-ink">Explore</p>
+            <ul className="mt-3 space-y-2">
+              {links.map((l) => (
+                <li key={l.href}>
+                  <a href={l.href} className="transition-colors hover:text-ink">
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="md:col-span-4">
+            <p className="font-semibold text-ink">Get in touch</p>
+            <p className="mt-3">The best way to reach us is Instagram.</p>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex items-center gap-2 text-[14px] font-medium text-ink transition-colors hover:text-champagne-deep"
+            >
+              <InstagramIcon className="h-5 w-5" />
+              {INSTAGRAM_HANDLE}
+            </a>
+            <p className="mt-3">Email and studio details to follow.</p>
+          </div>
         </div>
-        <nav aria-label="Footer" className="md:col-span-3">
-          <p className="eyebrow text-champagne">Explore</p>
-          <ul className="mt-5 space-y-3 text-sm">
-            {links.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} className="link-underline pb-0.5 transition-colors hover:text-white">
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="md:col-span-4">
-          <p className="eyebrow text-champagne">Get in touch</p>
-          <p className="mt-5 text-sm leading-relaxed">For now, the best way to reach us is Instagram.</p>
-          <a
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-3 text-white transition-colors hover:text-champagne"
-          >
-            <InstagramIcon className="h-6 w-6" />
-            <span className="font-serif text-xl">{INSTAGRAM_HANDLE}</span>
-          </a>
-          <p className="mt-4 text-sm text-white/50">Email and studio details will be added here soon.</p>
-        </div>
-      </Container>
-      <div className="border-t border-white/10 py-6">
-        <Container className="flex flex-col gap-2 text-xs leading-relaxed text-white/45 md:flex-row md:justify-between md:gap-10">
+        <div className="flex flex-col gap-2 pt-6 md:flex-row md:justify-between md:gap-10">
           <p>© 2026 Stella White Studio. All rights reserved.</p>
           <p className="md:max-w-xl md:text-right">
             First-look preview. Photography shown is illustrative stock (Unsplash) and will be replaced with the studio’s own
             work.
           </p>
-        </Container>
-      </div>
+        </div>
+      </Container>
     </footer>
   );
 }
@@ -480,19 +416,26 @@ function Footer() {
 export default function Home() {
   return (
     <>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-champagne focus:px-4 focus:py-2 focus:text-black"
+      >
+        Skip to content
+      </a>
       <Header />
-      <main>
+      <main id="main">
         <Hero />
-        <Intro />
+        <Statement />
         <Experiences />
         <HowItWorks />
         <Included />
         <Occasions />
-        <KindWords />
+        <Reviews />
         <Faq />
         <FinalCta />
       </main>
       <Footer />
+      <Motion />
     </>
   );
 }

@@ -1,25 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { PHOTOS, photoUrl } from "@/lib/site";
 
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
-  display: "swap",
-});
-
 const inter = Inter({
   subsets: ["latin"],
+  axes: ["opsz"],
   variable: "--font-inter",
   display: "swap",
 });
 
-const title = "Stella White Studio | Bespoke, hand-finished event portraits";
+const title = "Stella White Studio | Event portraits, finished by hand";
 const description =
-  "Studio-lit black-and-white portraits at weddings, parties and brand events, with bespoke hand-crafted backdrops and print designs. Travel on request.";
+  "Studio-lit black-and-white portraits at weddings, parties and launches. Backdrops and prints made by hand for your event. Travel on request.";
 
 export const metadata: Metadata = {
   title,
@@ -42,14 +35,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0d0d0e",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="en" className={inter.variable}>
       <body>{children}</body>
     </html>
   );
